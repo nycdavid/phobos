@@ -1,0 +1,7 @@
+{
+	"environments": {
+		"development": {
+			"url": "postgres://localhost/postgres?sslmode=disable"
+		}
+	}
+}

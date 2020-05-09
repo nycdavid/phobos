@@ -1,0 +1,21 @@
+{
+	"action": "create_table",
+	"parameters": {
+		"name": "users",
+		"columns": [
+			{
+				"name": "id",
+				"data_type": "number",
+				"primary_key": true
+			},
+			{
+				"name": "name",
+				"data_type": "string"
+			},
+			{
+				"name": "address",
+				"data_type": "jsonb"
+			}
+		]
+	}
+}

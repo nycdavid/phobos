@@ -1,0 +1,21 @@
+{
+	"action": "create_table",
+	"parameters": {
+		"name": "cards",
+		"columns": [
+			{
+				"name": "id",
+				"data_type": "number",
+				"primary_key": true
+			},
+			{
+				"name": "front",
+				"data_type": "jsonb"
+			},
+			{
+				"name": "back",
+				"data_type": "jsonb"
+			}
+		]
+	}
+}

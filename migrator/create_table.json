@@ -1,9 +1,0 @@
-{
-	"action": "create_table",
-	"parameters": {
-		"name": "items",
-		"columns": [
-			{ "id": "int" }
-		]
-	}
-}
