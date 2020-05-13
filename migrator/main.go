@@ -29,7 +29,7 @@ func main() {
 	files := migrationsToRun(version)
 
 	for _, file := range files {
-		migrationfile.Migrate(file)
+		migrationfile.Migrate(file, dbo)
 	}
 }
 

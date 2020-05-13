@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"log"
 	"os"
+
+	"../../dbconnector"
+	"../migrationaction"
 )
 
 type MigrationFile struct {
@@ -12,10 +15,10 @@ type MigrationFile struct {
 	Parameters map[string]interface{} `json:"parameters"`
 }
 
-func Migrate(file string) {
+func Migrate(file string, dbo *dbconnector.DBO) {
 	migrationFile := readFile(file)
 
-	fmt.Println(migrationFile.Parameters["columns"])
+	migrationaction.Actions[migrationFile.Action](dbo, migrationFile.Parameters)
 }
 
 func readFile(file string) *MigrationFile {
