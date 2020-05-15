@@ -5,12 +5,12 @@
 		"columns": [
 			{
 				"name": "id",
-				"data_type": "number",
+				"data_type": "int",
 				"primary_key": true
 			},
 			{
 				"name": "name",
-				"data_type": "string"
+				"data_type": "text"
 			},
 			{
 				"name": "address",

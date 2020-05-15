@@ -1,7 +1,9 @@
 package migrationaction
 
 import (
+	"bytes"
 	"fmt"
+	"log"
 
 	"../../dbconnector"
 )
@@ -11,5 +13,37 @@ var Actions = map[string]func(*dbconnector.DBO, map[string]interface{}){
 }
 
 func CreateTable(dbo *dbconnector.DBO, params map[string]interface{}) {
-	fmt.Println(params)
+	tableName := params["name"].(string)
+	columns := params["columns"].([]interface{})
+
+	var b bytes.Buffer
+	b.WriteString(fmt.Sprintf("CREATE TABLE %s (\n", tableName))
+	for i, _ := range columns {
+		column := columns[i].(map[string]interface{})
+
+		b.WriteString(fmt.Sprintf(
+			"  %s %s",
+			column["name"].(string),
+			column["data_type"].(string),
+		))
+
+		if column["primary_key"] != nil && column["primary_key"].(bool) {
+			b.WriteString(" PRIMARY KEY")
+		}
+
+		if i != len(columns)-1 {
+			b.WriteString(",")
+		}
+
+		b.WriteString("\n")
+	}
+	b.WriteString(");")
+
+	_, e := dbo.Conn.Query(b.String())
+
+	if e != nil {
+		log.Fatal(e)
+	}
+
+	fmt.Println(b.String())
 }

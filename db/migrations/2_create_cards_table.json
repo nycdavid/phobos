@@ -5,7 +5,7 @@
 		"columns": [
 			{
 				"name": "id",
-				"data_type": "number",
+				"data_type": "int",
 				"primary_key": true
 			},
 			{
