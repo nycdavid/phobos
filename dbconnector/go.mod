@@ -1,3 +1,3 @@
-module github.com/nycdavid/dbconnector
+module github.com/nycdavid/phobos/dbconnector
 
 go 1.14
