@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -28,8 +29,18 @@ func main() {
 
 	files := migrationsToRun(version)
 
-	for _, file := range files {
+	for i, file := range files {
 		migrationfile.Migrate(file, dbo)
+
+		newVersion := version + i + 1
+		_, e := dbo.Conn.Query(fmt.Sprintf(
+			"UPDATE schema_migrations SET version = %d",
+			newVersion,
+		))
+
+		if e != nil {
+			log.Fatal(e)
+		}
 	}
 }
 
@@ -55,13 +66,15 @@ func migrationsToRun(version int) []string {
 }
 
 func currentVersion(dbo *dbconnector.DBO) int {
-	row, e := dbo.Conn.Query("SELECT schema_migrations.version FROM schema_migrations")
+	row := dbo.Conn.QueryRow("SELECT schema_migrations.version FROM schema_migrations")
+
+	var version uint8 = 0
+	e := row.Scan(&version)
 	if e != nil {
 		log.Fatal(e)
 	}
 
-	var schemaMig SchemaMigration
-	row.Scan(&schemaMig)
+	fmt.Println(version)
 
-	return schemaMig.Version
+	return int(version)
 }

@@ -63,5 +63,10 @@ func AddColumn(dbo *dbconnector.DBO, params map[string]interface{}) {
 		))
 	}
 
-	fmt.Printf(b.String())
+	_, e := dbo.Conn.Query(b.String())
+	if e != nil {
+		log.Fatal(e)
+	}
+
+	fmt.Println(b.String())
 }
