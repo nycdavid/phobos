@@ -7,7 +7,7 @@ import (
 	"os"
 
 	"github.com/nycdavid/phobos/dbconnector"
-	"github.com/nycdavid/phobos/migrationaction"
+	"github.com/nycdavid/phobos/migrator/migrationaction"
 )
 
 type MigrationFile struct {
