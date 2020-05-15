@@ -1,0 +1,17 @@
+{
+	"action": "create_table",
+	"parameters": {
+		"name": "decks",
+		"columns": [
+			{
+				"name": "id",
+				"data_type": "int",
+				"primary_key": true
+			},
+			{
+				"name": "name",
+				"data_type": "text"
+			}
+		]
+	}
+}

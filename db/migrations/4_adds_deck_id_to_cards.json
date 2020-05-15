@@ -1,0 +1,12 @@
+{
+	"action": "add_column",
+	"parameters": {
+		"name": "cards",
+		"columns": [
+			{
+				"name": "deck_id",
+				"data_type": "int"
+			}
+		]
+	}
+}

@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"strings"
 
-	"../dbconnector"
-	"./migrationfile"
+	"github.com/nycdavid/phobos/dbconnector"
+	"github.com/nycdavid/phobos/migrator/migrationfile"
 
 	_ "github.com/lib/pq"
 )
