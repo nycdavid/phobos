@@ -6,8 +6,8 @@ import (
 	"log"
 	"os"
 
-	"../../dbconnector"
-	"../migrationaction"
+	"github.com/nycdavid/phobos/dbconnector"
+	"github.com/nycdavid/phobos/migrationaction"
 )
 
 type MigrationFile struct {
