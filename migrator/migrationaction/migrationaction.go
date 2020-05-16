@@ -62,7 +62,7 @@ func AddColumn(dbo *dbconnector.DBO, params map[string]interface{}) {
 			"ALTER TABLE %s ADD COLUMN %s %s;\n",
 			tableName,
 			column["name"].(string),
-			column["name"].(string),
+			column["data_type"].(string),
 		))
 	}
 
