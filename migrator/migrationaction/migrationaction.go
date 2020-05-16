@@ -59,8 +59,9 @@ func AddColumn(dbo *dbconnector.DBO, params map[string]interface{}) {
 	for i, _ := range columns {
 		column := columns[i].(map[string]interface{})
 		b.WriteString(fmt.Sprintf(
-			"ALTER TABLE %s ADD COLUMN %s;\n",
+			"ALTER TABLE %s ADD COLUMN %s %s;\n",
 			tableName,
+			column["name"].(string),
 			column["name"].(string),
 		))
 	}

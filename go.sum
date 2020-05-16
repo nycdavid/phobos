@@ -36,6 +36,8 @@ github.com/nycdavid/phobos/migrator v0.0.0-20200516002058-0aa93b466a85 h1:ZVaYvT
 github.com/nycdavid/phobos/migrator v0.0.0-20200516002058-0aa93b466a85/go.mod h1:z4QeQFzwnphUd8eF0MnmvjTYHPc/D7hPFIbZdI2czYo=
 github.com/nycdavid/phobos/migrator v0.0.0-20200516002156-9e2b889bc69c h1:fEeuKazmfbBpMJzEVS5GUdeygN1fp4uNHX1LLYkvoN4=
 github.com/nycdavid/phobos/migrator v0.0.0-20200516002156-9e2b889bc69c/go.mod h1:z4QeQFzwnphUd8eF0MnmvjTYHPc/D7hPFIbZdI2czYo=
+github.com/nycdavid/phobos/migrator v0.0.0-20200516002806-6dd5c62d71ff h1:VrO5VvWv/ghTbtt3AJ+r4aoTbidb+Oo8WYP+S2frNJI=
+github.com/nycdavid/phobos/migrator v0.0.0-20200516002806-6dd5c62d71ff/go.mod h1:z4QeQFzwnphUd8eF0MnmvjTYHPc/D7hPFIbZdI2czYo=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
