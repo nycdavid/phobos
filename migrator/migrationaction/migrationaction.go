@@ -9,8 +9,9 @@ import (
 )
 
 var Actions = map[string]func(*dbconnector.DBO, map[string]interface{}){
-	"create_table": CreateTable,
-	"add_column":   AddColumn,
+	"create_table":     CreateTable,
+	"add_column":       AddColumn,
+	"make_foreign_key": MakeForeignKey,
 }
 
 func CreateTable(dbo *dbconnector.DBO, params map[string]interface{}) {
@@ -54,6 +55,7 @@ func AddColumn(dbo *dbconnector.DBO, params map[string]interface{}) {
 	columns := params["columns"].([]interface{})
 
 	var b bytes.Buffer
+
 	for i, _ := range columns {
 		column := columns[i].(map[string]interface{})
 		b.WriteString(fmt.Sprintf(
@@ -62,6 +64,30 @@ func AddColumn(dbo *dbconnector.DBO, params map[string]interface{}) {
 			column["name"].(string),
 		))
 	}
+
+	_, e := dbo.Conn.Query(b.String())
+	if e != nil {
+		log.Fatal(e)
+	}
+
+	fmt.Println(b.String())
+}
+
+func MakeForeignKey(dbo *dbconnector.DBO, params map[string]interface{}) {
+	tableName := params["name"].(string)
+	foreignKeyColumn := params["column"].(string)
+	referenceTable := params["references"].(string)
+
+	var b bytes.Buffer
+
+	b.WriteString(fmt.Sprintf("ALTER TABLE %s\n"), tableName)
+	b.WriteString(fmt.Sprintf(
+		"  ADD CONSTRAINT fk_%s_%s FOREIGN KEY (%s) REFERENCES %s (id);",
+		tableName,
+		referenceTable,
+		foreignKeyColumn,
+		referenceTable,
+	))
 
 	_, e := dbo.Conn.Query(b.String())
 	if e != nil {
