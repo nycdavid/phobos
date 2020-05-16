@@ -8,3 +8,7 @@ require (
 	github.com/nycdavid/phobos/dbconnector v0.0.0-20200515133311-cf4303de984d // indirect
 	github.com/nycdavid/phobos/migrator v0.0.0-20200516003550-b17bad812e05 // indirect
 )
+
+replace github.com/nycdavid/phobos/dbconnector => ./dbconnector/
+
+replace github.com/nycdavid/phobos/migrator => ./migrator/

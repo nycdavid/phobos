@@ -1,22 +1,17 @@
 package main
 
 import (
-	"net/http"
+	"github.com/nycdavid/phobos/web"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	r := gin.Default()
-	r.LoadHTMLGlob("views/*")
+	engine := gin.Default()
 
-	r.GET("/", Root)
+	web.Preamble(engine)
 
-	r.Run()
-}
+	web.DrawRoutes(engine)
 
-func Root(c *gin.Context) {
-	c.HTML(http.StatusOK, "index.tmpl", gin.H{
-		"title": "Index",
-	})
+	engine.Run()
 }
