@@ -74,7 +74,7 @@ func AddColumn(dbo *dbconnector.DBO, params map[string]interface{}) {
 }
 
 func MakeForeignKey(dbo *dbconnector.DBO, params map[string]interface{}) {
-	tableName := params["name"].(string)
+	tableName := params["table_name"].(string)
 	foreignKeyColumn := params["column"].(string)
 	referenceTable := params["references"].(string)
 
