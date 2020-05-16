@@ -80,7 +80,7 @@ func MakeForeignKey(dbo *dbconnector.DBO, params map[string]interface{}) {
 
 	var b bytes.Buffer
 
-	b.WriteString(fmt.Sprintf("ALTER TABLE %s\n"), tableName)
+	b.WriteString(fmt.Sprintf("ALTER TABLE %s\n", tableName))
 	b.WriteString(fmt.Sprintf(
 		"  ADD CONSTRAINT fk_%s_%s FOREIGN KEY (%s) REFERENCES %s (id);",
 		tableName,
