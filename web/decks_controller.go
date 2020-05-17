@@ -1,7 +1,6 @@
 package web
 
 import (
-	"html/template"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -29,12 +28,6 @@ func DecksController(engine *gin.Engine) {
 
 func DecksController_New(engine *gin.Engine) func(*gin.Context) {
 	return func(c *gin.Context) {
-		tmpl := template.Must(template.ParseFiles(
-			"views/layouts/application.tmpl",
-			"views/decks/new.tmpl",
-		))
-
-		engine.SetHTMLTemplate(tmpl)
-		c.HTML(http.StatusOK, "layouts/application.tmpl", nil)
+		c.HTML(http.StatusOK, "decks_new", nil)
 	}
 }

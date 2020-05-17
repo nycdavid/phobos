@@ -3,6 +3,7 @@ package web
 import (
 	"net/http"
 
+	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,8 +15,16 @@ var GetRoutes = map[string]func(c *gin.Context){
 	},
 }
 
+func renderer() multitemplate.Renderer {
+	r := multitemplate.NewRenderer()
+	r.AddFromFiles("decks_new", "views/layouts/application.tmpl", "views/decks/new.tmpl")
+
+	return r
+}
+
 func Preamble(engine *gin.Engine) {
 	engine.LoadHTMLGlob("views/**/*")
+	engine.HTMLRender = renderer()
 
 	engine.Static("/assets", "./webpack/dist")
 }
