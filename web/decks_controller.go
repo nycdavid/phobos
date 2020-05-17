@@ -1,27 +1,40 @@
 package web
 
 import (
+	"html/template"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-type Controller struct {
-	Routes []map[string]interface{}
-}
-
-func NewDecksController() *Controller {
+func DecksController(engine *gin.Engine) {
 	routes := []map[string]interface{}{
 		map[string]interface{}{
 			"path":   "/decks/new",
 			"method": "GET",
-			"func":   DecksController_New,
+			"func":   DecksController_New(engine),
 		},
 	}
 
-	&Controller{Routes: routes}
+	for _, route := range routes {
+		switch route["method"].(string) {
+		case "GET":
+			engine.GET(
+				route["path"].(string),
+				route["func"].(func(*gin.Context)),
+			)
+		}
+	}
 }
 
-func DecksController_New(c *gin.Context) {
-	c.HTML(http.StatusOK, "decks/new.tmpl")
+func DecksController_New(engine *gin.Engine) func(*gin.Context) {
+	return func(c *gin.Context) {
+		tmpl := template.Must(template.ParseFiles(
+			"views/layouts/application.tmpl",
+			"views/decks/new.tmpl",
+		))
+
+		engine.SetHTMLTemplate(tmpl)
+		c.HTML(http.StatusOK, "layouts/application.tmpl", nil)
+	}
 }

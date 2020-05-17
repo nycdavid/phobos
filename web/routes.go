@@ -21,7 +21,7 @@ func Preamble(engine *gin.Engine) {
 }
 
 func DrawRoutes(engine *gin.Engine) {
-	decksCtrl := NewDecksController()
+	DecksController(engine)
 
 	for path, fn := range GetRoutes {
 		engine.GET(path, fn)
