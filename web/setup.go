@@ -9,7 +9,7 @@ import (
 
 var GetRoutes = map[string]func(c *gin.Context){
 	"/": func(c *gin.Context) {
-		c.HTML(http.StatusOK, "layouts/application.tmpl", gin.H{
+		c.HTML(http.StatusOK, "layouts/application.html", gin.H{
 			"title": "Index",
 		})
 	},
@@ -17,7 +17,12 @@ var GetRoutes = map[string]func(c *gin.Context){
 
 func renderer() multitemplate.Renderer {
 	r := multitemplate.NewRenderer()
-	r.AddFromFiles("decks_new", "views/layouts/application.tmpl", "views/decks/new.tmpl")
+	r.AddFromFiles("layout", "views/layouts/application.html")
+	r.AddFromFiles(
+		"decks_new",
+		"views/layouts/application.html",
+		"views/decks/new.html",
+	)
 
 	return r
 }
@@ -25,8 +30,6 @@ func renderer() multitemplate.Renderer {
 func Preamble(engine *gin.Engine) {
 	engine.LoadHTMLGlob("views/**/*")
 	engine.HTMLRender = renderer()
-
-	engine.Static("/assets", "./webpack/dist")
 }
 
 func DrawRoutes(engine *gin.Engine) {

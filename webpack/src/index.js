@@ -1,10 +1,10 @@
 import React from "React";
 import ReactDOM from "react-dom";
 
-class Application extends React.Component {
+class Decks extends React.Component {
 	render() {
-		return (<h1>Application</h1>);
+		return (<h1>Deck</h1>)
 	}
 }
 
-ReactDOM.hydrate(<Application />, document.getElementById("app"));
+ReactDOM.hydrate(<Decks />, document.getElementById("app"));
