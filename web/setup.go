@@ -19,6 +19,11 @@ func renderer() multitemplate.Renderer {
 	r := multitemplate.NewRenderer()
 	r.AddFromFiles("layout", "views/layouts/application.html")
 	r.AddFromFiles(
+		"decks_index",
+		"views/layouts/application.html",
+		"views/decks/index.html",
+	)
+	r.AddFromFiles(
 		"decks_new",
 		"views/layouts/application.html",
 		"views/decks/new.html",
