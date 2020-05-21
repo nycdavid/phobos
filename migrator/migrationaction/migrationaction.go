@@ -24,10 +24,15 @@ func CreateTable(dbo *dbconnector.DBO, params map[string]interface{}) {
 		column := columns[i].(map[string]interface{})
 
 		b.WriteString(fmt.Sprintf(
-			"  %s %s",
+			"  %s",
 			column["name"].(string),
-			column["data_type"].(string),
 		))
+
+		if column["serial"] != nil && column["serial"].(bool) {
+			b.WriteString(" SERIAL")
+		} else {
+			b.WriteString(fmt.Sprintf(" %s", column["data_type"].(string)))
+		}
 
 		if column["primary_key"] != nil && column["primary_key"].(bool) {
 			b.WriteString(" PRIMARY KEY")

@@ -6,7 +6,8 @@
 			{
 				"name": "id",
 				"data_type": "int",
-				"primary_key": true
+				"primary_key": true,
+				"serial": true
 			},
 			{
 				"name": "name",
