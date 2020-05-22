@@ -15,6 +15,11 @@ func DecksController(engine *gin.Engine, models *models.Models) {
 			"method": "GET",
 			"func":   DecksController_Index(engine, models),
 		},
+		map[string]interface{}{
+			"path":   "/api/decks/:id",
+			"method": "GET",
+			"func":   DecksController_Show(engine, models),
+		},
 	}
 
 	for _, route := range routes {
@@ -32,5 +37,18 @@ func DecksController_Index(engine *gin.Engine, models *models.Models) func(*gin.
 	return func(c *gin.Context) {
 		decks := models.Deck.All()
 		c.JSON(http.StatusOK, decks)
+	}
+}
+
+func DecksController_Show(engine *gin.Engine, models *models.Models) func(*gin.Context) {
+	return func(c *gin.Context) {
+		id := c.Param("id")
+
+		deck, e := models.Deck.Find(id)
+		if e != nil {
+			c.JSON(http.StatusNotFound, nil)
+		} else {
+			c.JSON(http.StatusOK, deck)
+		}
 	}
 }
