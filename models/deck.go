@@ -50,3 +50,17 @@ func (d *Decks) Find(id string) (*Deck, error) {
 
 	return &deck, nil
 }
+
+func (d *Decks) Create(deck *Deck) (*Deck, error) {
+	row := d.dbo.Conn.QueryRow(fmt.Sprintf(
+		"INSERT INTO decks (name) VALUES ('%s') RETURNING id",
+		deck.Name,
+	))
+
+	e := row.Scan(&(deck.Id))
+	if e != nil {
+		return nil, e
+	}
+
+	return deck, nil
+}
