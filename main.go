@@ -2,6 +2,8 @@ package main
 
 import (
 	"github.com/nycdavid/phobos/api"
+	"github.com/nycdavid/phobos/dbconnector"
+	"github.com/nycdavid/phobos/models"
 	"github.com/nycdavid/phobos/web"
 
 	"github.com/gin-gonic/gin"
@@ -10,10 +12,13 @@ import (
 func main() {
 	engine := gin.Default()
 
-	web.Preamble(engine)
+	dbo := dbconnector.NewDBO("development")
+	models := models.Preamble(dbo)
 
+	web.Preamble(engine)
 	web.DrawRoutes(engine)
-	api.DrawRoutes(engine)
+
+	api.DrawRoutes(engine, models)
 
 	engine.Run()
 }
