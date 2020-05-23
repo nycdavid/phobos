@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/nycdavid/phobos/models"
+	"github.com/nycdavid/phobos/web/webserializers"
 
 	"github.com/gin-gonic/gin"
 )
@@ -36,9 +37,17 @@ func DecksController(engine *gin.Engine, models *models.Models) {
 func DecksController_Index(engine *gin.Engine, m *models.Models) func(*gin.Context) {
 	return func(c *gin.Context) {
 		decks := m.Deck.All()
+
+		var serializedDecks []*webserializers.Deck
+		for _, deck := range decks {
+			serializedDecks = append(
+				serializedDecks,
+				webserializers.NewDeck(deck),
+			)
+		}
+
 		c.HTML(http.StatusOK, "decks_index", gin.H{
-			"decks":        decks,
-			"showDeckPath": "/api/decks/",
+			"decks": serializedDecks,
 		})
 	}
 }
