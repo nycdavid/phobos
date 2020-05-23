@@ -16,7 +16,7 @@ func main() {
 	models := models.Preamble(dbo)
 
 	web.Preamble(engine)
-	web.DrawRoutes(engine)
+	web.DrawRoutes(engine, models)
 
 	api.DrawRoutes(engine, models)
 

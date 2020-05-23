@@ -3,6 +3,8 @@ package web
 import (
 	"net/http"
 
+	"github.com/nycdavid/phobos/models"
+
 	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-gonic/gin"
 )
@@ -37,8 +39,8 @@ func Preamble(engine *gin.Engine) {
 	engine.HTMLRender = renderer()
 }
 
-func DrawRoutes(engine *gin.Engine) {
-	DecksController(engine)
+func DrawRoutes(engine *gin.Engine, models *models.Models) {
+	DecksController(engine, models)
 
 	for path, fn := range GetRoutes {
 		engine.GET(path, fn)

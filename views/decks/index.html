@@ -1,5 +1,18 @@
 {{ define "content" }}
-	<script type="application/json">
-		{{ .decks }}
+	<div id="app"><h1>Foo</h1></div>
+
+	<script type="text/javascript">
+		const app = document.getElementById("app");
+		const Root = window.React.createElement(
+			window.Components.Decks,
+			{
+				decks: {{ .decks }},
+				paths: {
+					show_deck: {{ .showDeckPath }}
+				}
+			}
+		);
+
+		window.ReactDOM.hydrate(Root, app);
 	</script>
 {{ end }}

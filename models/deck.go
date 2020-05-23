@@ -53,7 +53,8 @@ func (d *Decks) Find(id string) (*Deck, error) {
 
 func (d *Decks) Create(deck *Deck) (*Deck, error) {
 	row := d.dbo.Conn.QueryRow(fmt.Sprintf(
-		"INSERT INTO decks (name) VALUES ('%s') RETURNING id",
+		"INSERT INTO decks (name)"+
+			" VALUES ('%s') RETURNING id",
 		deck.Name,
 	))
 

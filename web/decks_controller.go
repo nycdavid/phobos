@@ -3,10 +3,12 @@ package web
 import (
 	"net/http"
 
+	"github.com/nycdavid/phobos/models"
+
 	"github.com/gin-gonic/gin"
 )
 
-func DecksController(engine *gin.Engine) {
+func DecksController(engine *gin.Engine, models *models.Models) {
 	routes := []map[string]interface{}{
 		map[string]interface{}{
 			"path":   "/decks/new",
@@ -16,7 +18,7 @@ func DecksController(engine *gin.Engine) {
 		map[string]interface{}{
 			"path":   "/decks",
 			"method": "GET",
-			"func":   DecksController_Index(engine),
+			"func":   DecksController_Index(engine, models),
 		},
 	}
 
@@ -31,14 +33,12 @@ func DecksController(engine *gin.Engine) {
 	}
 }
 
-func DecksController_Index(engine *gin.Engine) func(*gin.Context) {
+func DecksController_Index(engine *gin.Engine, m *models.Models) func(*gin.Context) {
 	return func(c *gin.Context) {
+		decks := m.Deck.All()
 		c.HTML(http.StatusOK, "decks_index", gin.H{
-			"decks": []map[string]interface{}{
-				map[string]interface{}{
-					"name": "Korean",
-				},
-			},
+			"decks":        decks,
+			"showDeckPath": "/api/decks/",
 		})
 	}
 }

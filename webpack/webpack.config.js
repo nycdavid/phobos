@@ -1,7 +1,10 @@
 const path = require("path");
 
 module.exports = {
-	entry: "./webpack/src/index.js",
+	entry: {
+		app: "./webpack/src/index.js",
+		manifest: "./webpack/src/manifest.js",
+	},
 	module: {
 		rules: [
 			{
@@ -15,7 +18,7 @@ module.exports = {
 		extensions: ["*", ".js", ".jsx"]
 	},
 	output: {
-		filename: "app.js",
+		filename: "[name].js",
 		path: path.resolve(__dirname, "dist")
 	},
 	devServer: {
