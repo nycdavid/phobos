@@ -1,7 +1,7 @@
 {
-	"environments": {
-		"development": {
-			"url": "postgres://localhost/postgres?sslmode=disable"
-		}
-	}
+  "environments": {
+    "development": {
+      "url": "postgres://localhost/postgres?sslmode=disable"
+    }
+  }
 }

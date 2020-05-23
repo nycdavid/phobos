@@ -1,22 +1,22 @@
 {
-	"action": "create_table",
-	"parameters": {
-		"name": "users",
-		"columns": [
-			{
-				"name": "id",
-				"data_type": "int",
-				"primary_key": true,
-				"serial": true
-			},
-			{
-				"name": "name",
-				"data_type": "text"
-			},
-			{
-				"name": "address",
-				"data_type": "jsonb"
-			}
-		]
-	}
+  "action": "create_table",
+  "parameters": {
+    "name": "users",
+    "columns": [
+      {
+        "name": "id",
+        "data_type": "int",
+        "primary_key": true,
+        "serial": true
+      },
+      {
+        "name": "name",
+        "data_type": "text"
+      },
+      {
+        "name": "address",
+        "data_type": "jsonb"
+      }
+    ]
+  }
 }

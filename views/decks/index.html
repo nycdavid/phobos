@@ -1,15 +1,15 @@
 {{ define "content" }}
-	<div id="app"><h1>Foo</h1></div>
+<div id="app"><h1>Foo</h1></div>
 
-	<script type="text/javascript">
-		const app = document.getElementById("app");
-		const Root = window.React.createElement(
-			window.Components.Decks,
-			{
-				decks: {{ .decks }},
-			}
-		);
+<script type="text/javascript">
+  const app = document.getElementById("app");
+  const Root = window.React.createElement(
+  	window.Components.Decks,
+  	{
+  		decks: {{ .decks }},
+  	}
+  );
 
-		window.ReactDOM.hydrate(Root, app);
-	</script>
+  window.ReactDOM.hydrate(Root, app);
+</script>
 {{ end }}

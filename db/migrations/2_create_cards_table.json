@@ -1,22 +1,22 @@
 {
-	"action": "create_table",
-	"parameters": {
-		"name": "cards",
-		"columns": [
-			{
-				"name": "id",
-				"data_type": "int",
-				"primary_key": true,
-				"serial": true
-			},
-			{
-				"name": "front",
-				"data_type": "jsonb"
-			},
-			{
-				"name": "back",
-				"data_type": "jsonb"
-			}
-		]
-	}
+  "action": "create_table",
+  "parameters": {
+    "name": "cards",
+    "columns": [
+      {
+        "name": "id",
+        "data_type": "int",
+        "primary_key": true,
+        "serial": true
+      },
+      {
+        "name": "front",
+        "data_type": "jsonb"
+      },
+      {
+        "name": "back",
+        "data_type": "jsonb"
+      }
+    ]
+  }
 }

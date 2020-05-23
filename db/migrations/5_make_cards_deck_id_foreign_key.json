@@ -1,8 +1,8 @@
 {
-	"action": "make_foreign_key",
-	"parameters": {
-		"table_name": "cards",
-		"column": "deck_id",
-		"references": "decks"
-	}
+  "action": "make_foreign_key",
+  "parameters": {
+    "table_name": "cards",
+    "column": "deck_id",
+    "references": "decks"
+  }
 }
