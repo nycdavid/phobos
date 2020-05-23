@@ -37,6 +37,7 @@ func renderer() multitemplate.Renderer {
 func Preamble(engine *gin.Engine) {
 	engine.LoadHTMLGlob("views/**/*")
 	engine.HTMLRender = renderer()
+	engine.StaticFile("/favicon.ico", "./images/favicon.ico")
 }
 
 func DrawRoutes(engine *gin.Engine, models *models.Models) {
