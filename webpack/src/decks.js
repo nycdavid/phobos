@@ -10,20 +10,27 @@ class Decks extends React.Component {
 	}
 
 	render() {
-		const rows = this.state.decks.map(deck => {
+		const rows = this.state.decks.map((deck, i) => {
 			return (
-				<tr>
+				<tr key={i}>
 					<td>{deck.id}</td>
 					<td>{deck.name}</td>
+					<td>
+						<a href="#">New Card</a>
+						<a href="#">Study</a>
+					</td>
 				</tr>
 			)
 		});
 
 		return (
-			<table>
+			<table className="table">
 				<thead>
-					<th>id</th>
-					<th>name</th>
+					<tr>
+						<th>ID</th>
+						<th>Name</th>
+						<th>Actions</th>
+					</tr>
 				</thead>
 				<tbody>{rows}</tbody>
 			</table>
