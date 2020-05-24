@@ -1,4 +1,7 @@
 import React from "react";
+import marked from "marked";
+
+marked.setOptions({ gfm: true });
 
 class NewCardModal extends React.Component {
   constructor(props) {
@@ -7,6 +10,10 @@ class NewCardModal extends React.Component {
       tabGroups: {
         front: 0,
         back: 0,
+      },
+      content: {
+        front: "",
+        back: "",
       },
     };
   }
@@ -23,7 +30,11 @@ class NewCardModal extends React.Component {
     const newTabGroup = {};
     newTabGroup[tabGroup] = idx;
     const tabGroups = { ...this.state.tabGroups, ...newTabGroup };
-    this.setState({ tabGroups: tabGroups });
+    this.setState({ ...this.state, tabGroups: tabGroups });
+  }
+
+  handleChange(evt) {
+    this.setState({ content: { front: evt.target.value } });
   }
 
   frontSection() {
@@ -49,14 +60,27 @@ class NewCardModal extends React.Component {
             </a>
           </li>
         </ul>
-        <form>
-          <div className="form-group">
-            <label htmlFor="" className="col-form-label">
-              Front
-            </label>
-            <textarea type="text" className="form-control" />
-          </div>
-        </form>
+        {this.state.tabGroups.front === 0 ? (
+          <form>
+            <div className="form-group">
+              <label htmlFor="" className="col-form-label">
+                Front
+              </label>
+              <textarea
+                type="text"
+                className="form-control"
+                value={this.state.content.front}
+                onChange={this.handleChange.bind(this)}
+              />
+            </div>
+          </form>
+        ) : (
+          <div
+            dangerouslySetInnerHTML={{
+              __html: marked(this.state.content.front),
+            }}
+          />
+        )}
       </div>
     );
   }
