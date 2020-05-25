@@ -37,6 +37,12 @@ class NewCardModal extends React.Component {
     this.setState({ content: { front: evt.target.value } });
   }
 
+  handleChangeBack(evt) {
+    console.log(this.state);
+    const markedimp = marked;
+    this.setState({ content: { back: evt.target.value } });
+  }
+
   frontSection() {
     return (
       <div className="card-front">
