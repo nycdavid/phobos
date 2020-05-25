@@ -21,6 +21,11 @@
     "react-dom": "^16.13.1"
   },
   "scripts": {
-    "webpack": "webpack-dev-server --config webpack/webpack.config.js"
+    "webpack": "webpack-dev-server --config webpack/webpack.config.js",
+    "prettify": "prettier --write ."
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "bracketSpacing": true
   }
 }
