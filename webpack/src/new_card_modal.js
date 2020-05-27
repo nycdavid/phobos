@@ -1,12 +1,16 @@
 import React from "react";
 import marked from "marked";
+import axios from "axios";
+import Modal from "react-modal";
 
 marked.setOptions({ gfm: true });
 
 class NewCardModal extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
+      modalOpen: props.modalOpen,
       tabGroups: {
         front: 0,
         back: 0,
@@ -16,6 +20,14 @@ class NewCardModal extends React.Component {
         back: "",
       },
     };
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const modalOpen = this.props.modalOpen;
+
+    if (modalOpen !== prevProps.modalOpen) {
+      this.setState({ modalOpen: modalOpen });
+    }
   }
 
   activeClass(tabGroup, idx) {
@@ -126,26 +138,43 @@ class NewCardModal extends React.Component {
     );
   }
 
+  save() {
+    debugger;
+  }
+
+  closeModal() {
+    this.setState({ modalOpen: false });
+  }
+
   render() {
     return (
-      <div
-        className="modal fade"
-        id="new-card-modal"
-        role="dialog"
-        aria-hidden="true"
-      >
+      <Modal isOpen={this.state.modalOpen} ariaHideApp={false}>
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
               <h5>New card</h5>
+                <button className="close" type="button" aria-label="close" onClick={this.closeModal.bind(this)}>
+                  <span aria-hidden="true">
+                    &times;
+                  </span>
+              </button>
             </div>
             <div className="modal-body">
               {this.frontSection()}
               {this.backSection()}
             </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={this.save.bind(this)}
+              >
+                Save
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      </Modal>
     );
   }
 }
