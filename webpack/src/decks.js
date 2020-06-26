@@ -2,20 +2,19 @@ import React from "React";
 
 import NewCardModal from "./new_card_modal";
 
-
 class Decks extends React.Component {
   constructor(props) {
     super(props);
     console.log(props);
     this.state = {
       decks: props.decks,
-			modalOpen: false
+      modalOpen: false,
     };
   }
 
-	openModal() {
-		this.setState({ modalOpen: true });
-	}
+  openModal() {
+    this.setState({ modalOpen: true });
+  }
 
   render() {
     const rows = this.state.decks.map((deck, i) => {
@@ -28,7 +27,7 @@ class Decks extends React.Component {
               data-target="#new-card-modal"
               data-toggle="modal"
               href="#"
-							onClick={this.openModal.bind(this)}
+              onClick={this.openModal.bind(this)}
             >
               New Card
             </a>
@@ -50,7 +49,12 @@ class Decks extends React.Component {
           </thead>
           <tbody>{rows}</tbody>
         </table>
-        <NewCardModal modalOpen={this.state.modalOpen} />
+        <NewCardModal
+          modalOpen={this.state.modalOpen}
+          closeModalFn={() => {
+            this.setState({ modalOpen: false });
+          }}
+        />
       </div>
     );
   }
