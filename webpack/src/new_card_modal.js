@@ -10,7 +10,7 @@ class NewCardModal extends React.Component {
     super(props);
 
     this.state = {
-      modalOpen: props.modalOpen,
+      closeModalFn: props.closeModalFn,
       tabGroups: {
         front: 0,
         back: 0,
@@ -142,10 +142,6 @@ class NewCardModal extends React.Component {
     debugger;
   }
 
-  closeModal() {
-    this.setState({ modalOpen: false });
-  }
-
   render() {
     return (
       <Modal isOpen={this.state.modalOpen} ariaHideApp={false}>
@@ -153,7 +149,7 @@ class NewCardModal extends React.Component {
           <div className="modal-content">
             <div className="modal-header">
               <h5>New card</h5>
-                <button className="close" type="button" aria-label="close" onClick={this.closeModal.bind(this)}>
+                <button className="close" type="button" aria-label="close" onClick={this.props.closeModalFn}>
                   <span aria-hidden="true">
                     &times;
                   </span>
