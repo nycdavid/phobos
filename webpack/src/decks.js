@@ -37,6 +37,10 @@ class Decks extends React.Component {
       );
     });
 
+    // TODO: how do we open the modal w/ contextual
+    // information like what deck the modal is opening
+    // with?
+
     return (
       <div>
         <table className="table">
