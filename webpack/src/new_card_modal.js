@@ -15,10 +15,11 @@ class NewCardModal extends React.Component {
         front: 0,
         back: 0,
       },
-      content: {
+      card: {
         front: "",
         back: "",
       },
+      deck: props.deck,
     };
   }
 
@@ -46,13 +47,13 @@ class NewCardModal extends React.Component {
   }
 
   handleChange(evt) {
-    this.setState({ content: { front: evt.target.value } });
+    this.setState({ card: { front: evt.target.value } });
   }
 
   handleChangeBack(evt) {
     console.log(this.state);
     const markedimp = marked;
-    this.setState({ content: { back: evt.target.value } });
+    this.setState({ card: { back: evt.target.value } });
   }
 
   frontSection() {
@@ -87,7 +88,7 @@ class NewCardModal extends React.Component {
               <textarea
                 type="text"
                 className="form-control"
-                value={this.state.content.front}
+                value={this.state.card.front}
                 onChange={this.handleChange.bind(this)}
               />
             </div>
@@ -95,7 +96,7 @@ class NewCardModal extends React.Component {
         ) : (
           <div
             dangerouslySetInnerHTML={{
-              __html: marked(this.state.content.front),
+              __html: marked(this.state.card.front),
             }}
           />
         )}
@@ -139,7 +140,10 @@ class NewCardModal extends React.Component {
   }
 
   save() {
-    axios
+    const { deckCardsPath } = this.props.deck
+    axios.post(deckCardsPath, this.state.card)
+    .then(resp => {
+    })
   }
 
   render() {
@@ -149,10 +153,10 @@ class NewCardModal extends React.Component {
           <div className="modal-content">
             <div className="modal-header">
               <h5>New card</h5>
-                <button className="close" type="button" aria-label="close" onClick={this.props.closeModalFn}>
-                  <span aria-hidden="true">
-                    &times;
-                  </span>
+              <button className="close" type="button" aria-label="close" onClick={this.props.closeModalFn}>
+                <span aria-hidden="true">
+                  &times;
+                </span>
               </button>
             </div>
             <div className="modal-body">

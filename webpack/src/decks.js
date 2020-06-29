@@ -5,15 +5,15 @@ import NewCardModal from "./new_card_modal";
 class Decks extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props);
     this.state = {
       decks: props.decks,
       modalOpen: false,
+      currentDeck: {},
     };
   }
 
-  openModal() {
-    this.setState({ modalOpen: true });
+  openModal(deck) {
+    this.setState({ modalOpen: true, currentDeck: deck });
   }
 
   render() {
@@ -27,7 +27,7 @@ class Decks extends React.Component {
               data-target="#new-card-modal"
               data-toggle="modal"
               href="#"
-              onClick={this.openModal.bind(this)}
+              onClick={() => { this.openModal(deck) }}
             >
               New Card
             </a>
@@ -36,10 +36,6 @@ class Decks extends React.Component {
         </tr>
       );
     });
-
-    // TODO: how do we open the modal w/ contextual
-    // information like what deck the modal is opening
-    // with?
 
     return (
       <div>
@@ -54,10 +50,11 @@ class Decks extends React.Component {
           <tbody>{rows}</tbody>
         </table>
         <NewCardModal
-          modalOpen={this.state.modalOpen}
           closeModalFn={() => {
-            this.setState({ modalOpen: false });
+            this.setState({ modalOpen: false, currentDeck: {} });
           }}
+          deck={this.state.currentDeck}
+          modalOpen={this.state.modalOpen}
         />
       </div>
     );
