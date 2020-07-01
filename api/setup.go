@@ -8,4 +8,5 @@ import (
 
 func DrawRoutes(engine *gin.Engine, models *models.Models) {
 	DecksController(engine, models)
+	DecksCardsController(engine, models)
 }

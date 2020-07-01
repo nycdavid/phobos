@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"log"
 	"os"
+	"path"
 )
 
 type DbConfig struct {
@@ -30,7 +31,10 @@ func NewDBO(env string) *DBO {
 }
 
 func readDbConfig(conf *DbConfig) {
-	file, e := os.Open("db/config.json")
+	root := os.Getenv("PROJECT_ROOT")
+	configPath := path.Join(root, "db", "config.json")
+
+	file, e := os.Open(configPath)
 	if e != nil {
 		log.Fatal(e)
 	}

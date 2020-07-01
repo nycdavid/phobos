@@ -29,6 +29,8 @@ func DecksController(engine *gin.Engine, models *models.Models) {
 		},
 	}
 
+	// TODO : extract this to module, we'll need it in a few
+	// places
 	for _, route := range routes {
 		switch route["method"].(string) {
 		case "GET":
