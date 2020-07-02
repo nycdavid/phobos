@@ -14,6 +14,8 @@ import (
 )
 
 func TestDecksCardsController_Create(t *testing.T) {
+	models.Cards.Create(&models.Card{Front: "foo"})
+
 	ts := httptest.NewServer((func() *gin.Engine {
 		engine := gin.Default()
 
@@ -26,11 +28,5 @@ func TestDecksCardsController_Create(t *testing.T) {
 	})())
 	defer ts.Close()
 
-	resp, e := http.Get(fmt.Sprintf("%s/api/decks/1/cards", ts.URL))
-
-	if e != nil {
-		t.Errorf("Error: %s", e)
-	}
-
-	fmt.Println(resp)
+	http.Get(fmt.Sprintf("%s/api/decks/1/cards", ts.URL))
 }

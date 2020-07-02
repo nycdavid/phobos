@@ -37,6 +37,9 @@ func DecksCardsController(engine *gin.Engine, models *models.Models) {
 
 func DecksCardsController_Index(engine *gin.Engine, m *models.Models) func(*gin.Context) {
 	return func(c *gin.Context) {
-		c.JSON(http.StatusOK, nil)
+		allCards := m.Card.All()
+
+		print(allCards)
+		c.JSON(http.StatusOK, allCards)
 	}
 }
