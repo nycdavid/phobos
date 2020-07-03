@@ -1,6 +1,8 @@
 package models
 
 import (
+	"fmt"
+
 	"github.com/nycdavid/phobos/dbconnector"
 )
 
@@ -20,5 +22,15 @@ func (cs *Cards) All() []*Card {
 	return cards
 }
 
-func (cs *Cards) Create(c *Card) *Card {
+func (cs *Cards) Create(data map[string]interface{}) *Card {
+	sql := fmt.Sprintf(`
+		INSERT INTO cards (front, back)
+		VALUES ('%s', '%s');`,
+		data["front"].(string),
+		data["back"].(string),
+	)
+
+	fmt.Println(sql)
+
+	return &Card{}
 }

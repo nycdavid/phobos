@@ -14,15 +14,17 @@ import (
 )
 
 func TestDecksCardsController_Create(t *testing.T) {
-	models.Cards.Create(&models.Card{Front: "foo"})
+	engine := gin.Default()
+
+	dbo := dbconnector.NewDBO("test")
+	mdls := models.Preamble(dbo)
+	mdls.Deck.Create(map[string]interface{}{
+		"front": "foo",
+		"back":  "bar",
+	})
 
 	ts := httptest.NewServer((func() *gin.Engine {
-		engine := gin.Default()
-
-		dbo := dbconnector.NewDBO("test")
-		models := models.Preamble(dbo)
-
-		api.DrawRoutes(engine, models)
+		api.DrawRoutes(engine, mdls)
 
 		return engine
 	})())

@@ -37,7 +37,7 @@ func (d *Decks) All() []*Deck {
 	return decks
 }
 
-func (d *Decks) Find(id string) (*Deck, error) {
+func (d *Decks) Find(id int) (*Deck, error) {
 	var deck Deck
 	row := d.dbo.Conn.QueryRow(
 		fmt.Sprintf("SELECT * FROM decks WHERE decks.id = %s", id),
@@ -51,17 +51,22 @@ func (d *Decks) Find(id string) (*Deck, error) {
 	return &deck, nil
 }
 
-func (d *Decks) Create(deck *Deck) (*Deck, error) {
-	row := d.dbo.Conn.QueryRow(fmt.Sprintf(
-		"INSERT INTO decks (name)"+
-			" VALUES ('%s') RETURNING id",
-		deck.Name,
+func (d *Decks) Create(data map[string]interface{}) (*Deck, error) {
+	row := d.dbo.Conn.QueryRow(fmt.Sprintf(`
+		INSERT INTO decks (name)
+		VALUES ('%s') RETURNING id, name`,
+		data["name"].(string),
 	))
 
-	e := row.Scan(&(deck.Id))
+	var deck *Deck
+	e := row.Scan(deck.Id, deck.Name)
 	if e != nil {
 		return nil, e
 	}
 
 	return deck, nil
+}
+
+func (d *Decks) DeleteAll() error {
+	d.dbo.Conn
 }
