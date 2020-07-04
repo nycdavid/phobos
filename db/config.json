@@ -2,6 +2,10 @@
   "environments": {
     "development": {
       "url": "postgres://localhost/postgres?sslmode=disable"
-    }
+    },
+		"test": {
+			"host": "localhost",
+			"dbname": "test"
+		}
   }
 }
