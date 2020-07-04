@@ -1,10 +1,12 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
+	"path"
 	"strconv"
 	"strings"
 
@@ -19,27 +21,65 @@ type SchemaMigration struct {
 }
 
 func main() {
-	env := os.Args[1]
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
+	action := os.Args[1]
+	env := os.Args[2]
+	if action != "" {
+		action = os.Args[1]
+	}
 	if env != "" {
-		env = os.Args[1]
+		env = os.Args[2]
 	}
 
-	dbo := dbconnector.NewDBO(env)
-	version := currentVersion(dbo)
+	if action == "db_create" {
+		root := os.Getenv("PROJECT_ROOT")
+		configPath := path.Join(root, "db/config.json")
+		configFile := NewConfigFile(configPath)
 
-	files := migrationsToRun(version)
+		dbName := configFile.Environments[env]["dbname"]
+		dbo, _ := sql.Open(
+			"postgres",
+			"host=localhost dbname=postgres sslmode=disable user=davidko",
+		)
 
-	for i, file := range files {
-		migrationfile.Migrate(file, dbo)
+		// Create database
+		_, e := dbo.Exec(fmt.Sprintf("CREATE DATABASE %s;", dbName))
+		if e != nil {
+			log.Fatalf("Error creating database: %s", e)
+		}
 
-		newVersion := version + i + 1
-		_, e := dbo.Conn.Query(fmt.Sprintf(
-			"UPDATE schema_migrations SET version = %d",
-			newVersion,
-		))
-
+		dbo.Close()
+		dbconn, e := NewDbConnection(configFile.Environments[env])
 		if e != nil {
 			log.Fatal(e)
+		}
+
+		// Create schema_migrations table
+		_, e = dbconn.Dbo.Exec(`CREATE TABLE schema_migrations (
+			version int
+		)`)
+
+		if e != nil {
+			log.Fatalf("Error creating table: %s", e)
+		}
+	} else {
+		dbo := dbconnector.NewDBO(env)
+		version := currentVersion(dbo)
+
+		files := migrationsToRun(version)
+
+		for i, file := range files {
+			migrationfile.Migrate(file, dbo)
+
+			newVersion := version + i + 1
+			_, e := dbo.Conn.Query(fmt.Sprintf(
+				"UPDATE schema_migrations SET version = %d",
+				newVersion,
+			))
+
+			if e != nil {
+				log.Fatalf("Error setting version in schema_migrations: %s", e)
+			}
 		}
 	}
 }
@@ -47,7 +87,7 @@ func main() {
 func migrationsToRun(version int) []string {
 	files, e := ioutil.ReadDir("db/migrations")
 	if e != nil {
-		log.Fatal(e)
+		log.Fatalf("Error reading migrations: %s", e)
 	}
 
 	var migrations []string

@@ -1,6 +1,0 @@
-github.com/lib/pq v1.5.2 h1:yTSXVswvWUOQ3k1sd7vJfDrbSl8lKuscqFJRqjC0ifw=
-github.com/lib/pq v1.5.2/go.mod h1:5WUZQaWbwv1U+lTReE5YruASi9Al49XbQIvNi/34Woo=
-github.com/nycdavid/phobos v0.0.0-20200515131807-9dc959264277 h1:dTmgcpb2R0UZGtMaTu3I3jpEZM3+rWpv6Ft4ykgSQbc=
-github.com/nycdavid/phobos v0.0.0-20200515132349-107e69fd0b43 h1:nYi/n3mluZgXx7lK3DItiqgyDNmz/6QUWZmPjvFdLH8=
-github.com/nycdavid/phobos/dbconnector v0.0.0-20200515132349-107e69fd0b43 h1:f8kHTtP8FVF2H7bqKZTXv3G9+9dmgV/JpBYo2wy8RmE=
-github.com/nycdavid/phobos/dbconnector v0.0.0-20200515132349-107e69fd0b43/go.mod h1:+mimXDvEEHtM+In21Ihx6qSp1uN81EWr/yQx+m4Nusc=
