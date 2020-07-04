@@ -58,15 +58,20 @@ func (d *Decks) Create(data map[string]interface{}) (*Deck, error) {
 		data["name"].(string),
 	))
 
-	var deck *Deck
-	e := row.Scan(deck.Id, deck.Name)
+	var deck Deck
+	e := row.Scan(&(deck.Id), &(deck.Name))
 	if e != nil {
 		return nil, e
 	}
 
-	return deck, nil
+	return &deck, nil
 }
 
 func (d *Decks) DeleteAll() error {
-	d.dbo.Conn
+	_, err := d.dbo.Conn.Query("TRUNCATE decks;")
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

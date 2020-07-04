@@ -2,6 +2,9 @@
   "environments": {
     "development": {
       "url": "postgres://localhost/postgres?sslmode=disable"
-    }
+    },
+		"test": {
+			"url": "postgres://localhost/test?sslmode=disable"
+		}
   }
 }
