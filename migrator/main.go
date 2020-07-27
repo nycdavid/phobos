@@ -31,11 +31,11 @@ func main() {
 		env = os.Args[2]
 	}
 
-	if action == "db_create" {
-		root := os.Getenv("PROJECT_ROOT")
-		configPath := path.Join(root, "db/config.json")
-		configFile := NewConfigFile(configPath)
+	root := os.Getenv("PROJECT_ROOT")
+	configPath := path.Join(root, "db/config.json")
+	configFile := NewConfigFile(configPath)
 
+	if action == "db_create" {
 		dbName := configFile.Environments[env]["dbname"]
 		dbo, _ := sql.Open(
 			"postgres",
@@ -63,13 +63,17 @@ func main() {
 			log.Fatalf("Error creating table: %s", e)
 		}
 	} else {
-		dbo := dbconnector.NewDBO(env)
-		version := currentVersion(dbo)
+		dbconn, e := NewDbConnection(configFile.Environments[env])
+		if e != nil {
+			log.Fatal(e)
+		}
+
+		version := currentVersion(dbconn)
 
 		files := migrationsToRun(version)
 
 		for i, file := range files {
-			migrationfile.Migrate(file, dbo)
+			migrationfile.Migrate(file, dbconn)
 
 			newVersion := version + i + 1
 			_, e := dbo.Conn.Query(fmt.Sprintf(

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"os"
 	"path"
 	"testing"
@@ -32,5 +33,57 @@ func TestSetup(t *testing.T) {
 	if !(dbo.TableExists("schema_migrations")) {
 		cleanUpDb(t)
 		t.Error("Expected table schema_migrations to exist")
+	}
+}
+
+func TestMain_MigratingEmptyDatabase(t *testing.T) {
+	defer cleanUpDb(t)
+
+	dbo, e := sql.Open(
+		"postgres",
+		"host=localhost database=postgres user=davidko sslmode=disable",
+	)
+	if e != nil {
+		t.Error(e)
+	}
+
+	_, e = dbo.Exec("CREATE DATABASE test;")
+	if e != nil {
+		t.Error(e)
+	}
+
+	os.Setenv("PROJECT_ROOT", project_root)
+	os.Args = []string{"main.go", "migrate", "test"}
+
+	main()
+
+	dbo, e = sql.Open(
+		"postgres",
+		"host=localhost database=test user=davidko sslmode=disable",
+	)
+	if e != nil {
+		cleanUpDb(t)
+		t.Error(e)
+	}
+
+	res, e := dbo.Exec(`
+		SELECT table_name
+		FROM information_schema.tables
+		WHERE table_schema = 'public'
+		AND table_name = 'users';
+	`)
+	if e != nil {
+		cleanUpDb(t)
+		t.Error(e)
+	}
+
+	ct, e := res.RowsAffected()
+	if e != nil {
+		cleanUpDb(t)
+		t.Error(e)
+	}
+
+	if ct == 0 {
+		t.Error("Expected users table to exist")
 	}
 }
