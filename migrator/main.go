@@ -68,15 +68,17 @@ func main() {
 			log.Fatal(e)
 		}
 
-		version := currentVersion(dbconn)
+		var version int
+		dbconn.Dbo.QueryRow("SELECT version FROM schema_migrations;").Scan(&version)
+		print(version)
 
 		files := migrationsToRun(version)
 
 		for i, file := range files {
-			migrationfile.Migrate(file, dbconn)
+			migrationfile.Migrate(file, dbconn.Dbo)
 
 			newVersion := version + i + 1
-			_, e := dbo.Conn.Query(fmt.Sprintf(
+			_, e := dbconn.Dbo.Query(fmt.Sprintf(
 				"UPDATE schema_migrations SET version = %d",
 				newVersion,
 			))
