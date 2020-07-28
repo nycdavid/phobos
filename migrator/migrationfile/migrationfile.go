@@ -15,6 +15,9 @@ type MigrationFile struct {
 	Parameters map[string]interface{} `json:"parameters"`
 }
 
+type DBO interface {
+}
+
 func Migrate(file string, dbo *dbconnector.DBO) {
 	migrationFile := readFile(file)
 
