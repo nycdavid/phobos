@@ -6,9 +6,10 @@ import (
 	"log"
 
 	"github.com/nycdavid/phobos/dbconnector"
+	"github.com/nycdavid/phobos/migrationfile"
 )
 
-var Actions = map[string]func(*dbconnector.DBO, map[string]interface{}){
+var Actions = map[string]func(migrationfile.DBO, map[string]interface{}){
 	"create_table":     CreateTable,
 	"add_column":       AddColumn,
 	"make_foreign_key": MakeForeignKey,
