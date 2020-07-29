@@ -18,7 +18,7 @@ type MigrationFile struct {
 type DBO interface {
 }
 
-func Migrate(file string, dbo *dbconnector.DBO) {
+func Migrate(file string, dbo DBO) {
 	migrationFile := readFile(file)
 
 	migrationaction.Actions[migrationFile.Action](dbo, migrationFile.Parameters)
