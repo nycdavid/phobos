@@ -37,6 +37,7 @@ func TestSetup(t *testing.T) {
 }
 
 func TestMain_MigratingEmptyDatabase(t *testing.T) {
+	os.Setenv("PROJECT_ROOT", project_root)
 	defer cleanUpDb(t)
 
 	dbo, e := sql.Open(
@@ -44,18 +45,23 @@ func TestMain_MigratingEmptyDatabase(t *testing.T) {
 		"host=localhost database=postgres user=davidko sslmode=disable",
 	)
 	if e != nil {
+		cleanUpDb(t)
 		t.Error(e)
 	}
 
 	_, e = dbo.Exec("CREATE DATABASE test;")
 	if e != nil {
+		cleanUpDb(t)
 		t.Error(e)
 	}
 
-	os.Setenv("PROJECT_ROOT", project_root)
 	os.Args = []string{"main.go", "migrate", "test"}
 
-	main()
+	code := main()
+	if code != 0 {
+		cleanUpDb(t)
+		t.Error("Main failed")
+	}
 
 	dbo, e = sql.Open(
 		"postgres",
