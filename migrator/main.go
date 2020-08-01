@@ -11,7 +11,6 @@ import (
 	"strings"
 
 	"github.com/nycdavid/phobos/dbconnector"
-	"github.com/nycdavid/phobos/migrator/migrationfile"
 
 	_ "github.com/lib/pq"
 )
@@ -75,7 +74,7 @@ func main() {
 		files := migrationsToRun(version)
 
 		for i, file := range files {
-			migrationfile.Migrate(file, dbconn.Dbo)
+			Migrate(file, dbconn.Dbo)
 
 			newVersion := version + i + 1
 			_, e := dbconn.Dbo.Query(fmt.Sprintf(
