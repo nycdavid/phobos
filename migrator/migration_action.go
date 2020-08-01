@@ -1,21 +1,19 @@
-package migrationaction
+package main
 
 import (
 	"bytes"
+	"database/sql"
 	"fmt"
 	"log"
-
-	"github.com/nycdavid/phobos/dbconnector"
-	"github.com/nycdavid/phobos/migrationfile"
 )
 
-var Actions = map[string]func(migrationfile.DBO, map[string]interface{}){
+var Actions = map[string]func(*sql.DB, map[string]interface{}){
 	"create_table":     CreateTable,
 	"add_column":       AddColumn,
 	"make_foreign_key": MakeForeignKey,
 }
 
-func CreateTable(dbo *dbconnector.DBO, params map[string]interface{}) {
+func CreateTable(dbo *sql.DB, params map[string]interface{}) {
 	tableName := params["name"].(string)
 	columns := params["columns"].([]interface{})
 
@@ -47,7 +45,7 @@ func CreateTable(dbo *dbconnector.DBO, params map[string]interface{}) {
 	}
 	b.WriteString(");")
 
-	_, e := dbo.Conn.Query(b.String())
+	_, e := dbo.Query(b.String())
 
 	if e != nil {
 		log.Fatal(e)
@@ -56,7 +54,7 @@ func CreateTable(dbo *dbconnector.DBO, params map[string]interface{}) {
 	fmt.Println(b.String())
 }
 
-func AddColumn(dbo *dbconnector.DBO, params map[string]interface{}) {
+func AddColumn(dbo *sql.DB, params map[string]interface{}) {
 	tableName := params["name"].(string)
 	columns := params["columns"].([]interface{})
 
@@ -72,7 +70,7 @@ func AddColumn(dbo *dbconnector.DBO, params map[string]interface{}) {
 		))
 	}
 
-	_, e := dbo.Conn.Query(b.String())
+	_, e := dbo.Query(b.String())
 	if e != nil {
 		log.Fatal(e)
 	}
@@ -80,7 +78,7 @@ func AddColumn(dbo *dbconnector.DBO, params map[string]interface{}) {
 	fmt.Println(b.String())
 }
 
-func MakeForeignKey(dbo *dbconnector.DBO, params map[string]interface{}) {
+func MakeForeignKey(dbo *sql.DB, params map[string]interface{}) {
 	tableName := params["table_name"].(string)
 	foreignKeyColumn := params["column"].(string)
 	referenceTable := params["references"].(string)
@@ -96,7 +94,7 @@ func MakeForeignKey(dbo *dbconnector.DBO, params map[string]interface{}) {
 		referenceTable,
 	))
 
-	_, e := dbo.Conn.Query(b.String())
+	_, e := dbo.Query(b.String())
 	if e != nil {
 		log.Fatal(e)
 	}

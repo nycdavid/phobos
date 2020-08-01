@@ -1,13 +1,11 @@
-package migrationfile
+package main
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"log"
 	"os"
-
-	"github.com/nycdavid/phobos/dbconnector"
-	"github.com/nycdavid/phobos/migrator/migrationaction"
 )
 
 type MigrationFile struct {
@@ -15,13 +13,10 @@ type MigrationFile struct {
 	Parameters map[string]interface{} `json:"parameters"`
 }
 
-type DBO interface {
-}
-
-func Migrate(file string, dbo DBO) {
+func Migrate(file string, dbo *sql.DB) {
 	migrationFile := readFile(file)
 
-	migrationaction.Actions[migrationFile.Action](dbo, migrationFile.Parameters)
+	Actions[migrationFile.Action](dbo, migrationFile.Parameters)
 }
 
 func readFile(file string) *MigrationFile {
