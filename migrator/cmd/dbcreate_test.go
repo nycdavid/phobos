@@ -4,5 +4,7 @@ import (
 	"testing"
 )
 
-func TestDbCreate_RequiresEnvironmentFlag(t *testing.T) {
+func TestDbCreate_UsesDevelopmentByDefault(t *testing.T) {
+	dbcreateCmd := NewDbCreateCommand()
+	dbcreateCmd.Execute()
 }

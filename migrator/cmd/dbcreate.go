@@ -7,7 +7,25 @@ import (
 )
 
 func init() {
-	dbcreateCmd.PersistentFlags().StringVarP(
+	dbcreateCmd := NewDbCreateCommand()
+	rootCmd.AddCommand(dbcreateCmd)
+}
+
+var Environment string
+
+func NewDbCreateCommand() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "dbcreate",
+		Short: "Create database from config file",
+		Long: `Parse the configuration file and create a
+		database with that name`,
+		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Println("Creating database...")
+			fmt.Println(cmd.Flag("environment"))
+		},
+	}
+
+	cmd.PersistentFlags().StringVarP(
 		&Environment,
 		"environment",
 		"e",
@@ -15,18 +33,5 @@ func init() {
 		"Application environment to use",
 	)
 
-	rootCmd.AddCommand(dbcreateCmd)
-}
-
-var Environment string
-
-var dbcreateCmd = &cobra.Command{
-	Use:   "dbcreate",
-	Short: "Create database from config file",
-	Long: `Parse the configuration file and create a
-		database with that name`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Creating database...")
-		fmt.Println(cmd.Flag("environment").Value)
-	},
+	return cmd
 }
