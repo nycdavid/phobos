@@ -1,8 +1,12 @@
 package cmd
 
 import (
+	"context"
+
 	"github.com/spf13/cobra"
 )
+
+type ContextKey string
 
 func init() {
 	dbcreateCmd := NewDbCreateCommand()
@@ -20,6 +24,15 @@ func NewDbCreateCommand() *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 		},
 	}
+
+	cfg := NewConfigFile("/Users/davidko/projects/phobos/db/config.json")
+
+	ctx := context.WithValue(
+		context.Background(),
+		ContextKey("configFile"),
+		cfg,
+	)
+	cmd.ExecuteContext(ctx)
 
 	cmd.PersistentFlags().StringVarP(
 		&Environment,

@@ -15,9 +15,9 @@ func TestDbCreate_UsesDevelopmentByDefault(t *testing.T) {
 
 func TestDbCreate_ConfigFileInCtx(t *testing.T) {
 	dbcreateCmd := NewDbCreateCommand()
+	configFile := dbcreateCmd.Context().Value(ContextKey("configFile"))
 
-	ctxVal := dbcreateCmd.Context().Value("foo")
-	if ctxVal.(string) != "bar" {
-		t.Error("Expected bar")
+	if configFile == nil {
+		t.Errorf("Expected non-nil config file")
 	}
 }
