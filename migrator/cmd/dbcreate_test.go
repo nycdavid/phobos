@@ -26,6 +26,8 @@ func TestDbCreate_ConfigFileInCtx(t *testing.T) {
 }
 
 func TestDbCreate_CreatesDatabase(t *testing.T) {
+	dbcreateCmd := NewDbCreateCommand()
+	dbcreateCmd.Execute()
 	dbo, e := sql.Open(
 		"postgres",
 		"host=localhost port=5432 database=test password=password user=postgres database=test sslmode=disable",

@@ -5,7 +5,8 @@
     },
 		"test": {
 			"host": "localhost",
-			"dbname": "test"
+			"dbname": "test",
+			"port": 5432
 		}
   }
 }

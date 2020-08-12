@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/spf13/cobra"
 )
@@ -22,6 +23,9 @@ func NewDbCreateCommand() *cobra.Command {
 		Long: `Parse the configuration file and create a
 		database with that name`,
 		Run: func(cmd *cobra.Command, args []string) {
+			// cfg := cmd.Context().Value(ContextKey("configFile")).(*ConfigFile)
+			fmt.Println(cmd.PersistentFlags().GetString("environment"))
+			// fmt.Println(cfg.Environments[Environment])
 		},
 	}
 
