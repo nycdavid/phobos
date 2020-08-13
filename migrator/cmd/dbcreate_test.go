@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"database/sql"
+	"os"
 	"testing"
 
 	_ "github.com/lib/pq"
@@ -26,8 +27,14 @@ func TestDbCreate_ConfigFileInCtx(t *testing.T) {
 }
 
 func TestDbCreate_CreatesDatabase(t *testing.T) {
+	cfgPath := "/Users/davidko/projects/phobos/db/config.json"
+	ctx := ConfigCtx(cfgPath)
+
+	os.Args[1] = "-e=test"
+
 	dbcreateCmd := NewDbCreateCommand()
-	dbcreateCmd.Execute()
+	dbcreateCmd.ExecuteContext(ctx)
+
 	dbo, e := sql.Open(
 		"postgres",
 		"host=localhost port=5432 database=test password=password user=postgres database=test sslmode=disable",

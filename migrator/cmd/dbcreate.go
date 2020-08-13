@@ -3,6 +3,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"log"
 
 	"github.com/spf13/cobra"
 )
@@ -23,20 +24,16 @@ func NewDbCreateCommand() *cobra.Command {
 		Long: `Parse the configuration file and create a
 		database with that name`,
 		Run: func(cmd *cobra.Command, args []string) {
-			// cfg := cmd.Context().Value(ContextKey("configFile")).(*ConfigFile)
-			fmt.Println(cmd.PersistentFlags().GetString("environment"))
-			// fmt.Println(cfg.Environments[Environment])
+			fmt.Println("Inside Run")
+			cfg := cmd.Context().Value(ContextKey("configFile")).(*ConfigFile)
+			env, e := cmd.PersistentFlags().GetString("environment")
+			if e != nil {
+				// [TODO] handle error
+				log.Print(e)
+			}
+			fmt.Println(cfg.Environments[env])
 		},
 	}
-
-	cfg := NewConfigFile("/Users/davidko/projects/phobos/db/config.json")
-
-	ctx := context.WithValue(
-		context.Background(),
-		ContextKey("configFile"),
-		cfg,
-	)
-	cmd.ExecuteContext(ctx)
 
 	cmd.PersistentFlags().StringVarP(
 		&Environment,
@@ -47,4 +44,14 @@ func NewDbCreateCommand() *cobra.Command {
 	)
 
 	return cmd
+}
+
+func ConfigCtx(cfgPath string) context.Context {
+	cfg := NewConfigFile(cfgPath)
+
+	return context.WithValue(
+		context.Background(),
+		ContextKey("configFile"),
+		cfg,
+	)
 }
