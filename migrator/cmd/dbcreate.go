@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	"github.com/spf13/cobra"
@@ -24,14 +23,26 @@ func NewDbCreateCommand() *cobra.Command {
 		Long: `Parse the configuration file and create a
 		database with that name`,
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println("Inside Run")
 			cfg := cmd.Context().Value(ContextKey("configFile")).(*ConfigFile)
-			env, e := cmd.PersistentFlags().GetString("environment")
+			envStr, e := cmd.PersistentFlags().GetString("environment")
 			if e != nil {
 				// [TODO] handle error
 				log.Print(e)
 			}
-			fmt.Println(cfg.Environments[env])
+
+			env := cfg.Environments[envStr]
+
+			dbc, e := NewDbConnection(env)
+			if e != nil {
+				// [TODO] handle error
+				log.Print(e)
+			}
+
+			if dbc.DbExists(env["name"].(string)) {
+				log.Print("Database exists")
+			} else {
+				dbc.TableCreate(env["name"].(string))
+			}
 		},
 	}
 

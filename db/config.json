@@ -6,7 +6,9 @@
 		"test": {
 			"host": "localhost",
 			"name": "test",
-			"port": 5432
+			"port": 5432,
+			"user": "postgres",
+			"password": "password"
 		}
   }
 }

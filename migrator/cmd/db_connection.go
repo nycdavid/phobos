@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
 	"database/sql"
@@ -15,10 +15,10 @@ type DbConnection struct {
 
 func NewDbConnection(environment map[string]interface{}) (*DbConnection, error) {
 	dataSourceName := fmt.Sprintf(
-		"host=%s user=%s dbname=%s sslmode=disable",
+		"host=%s user=%s dbname=postgres password=%s sslmode=disable",
 		environment["host"].(string),
-		"davidko",
-		environment["dbname"].(string),
+		environment["user"].(string),
+		environment["password"].(string),
 	)
 
 	dbo, e := sql.Open("postgres", dataSourceName)
@@ -46,6 +46,7 @@ func (dbc *DbConnection) DbExists(dbname string) bool {
 	}
 
 	rowsAffected, e := res.RowsAffected()
+
 	if e != nil {
 		log.Fatal(e)
 	}
@@ -78,4 +79,17 @@ func (dbc *DbConnection) TableExists(tableName string) bool {
 	}
 
 	return true
+}
+
+func (dbc *DbConnection) TableCreate(tableName string) error {
+	_, e := dbc.Dbo.Exec(fmt.Sprintf(`
+		CREATE DATABASE %s;
+	`, tableName))
+	if e != nil {
+		return e
+	}
+
+	log.Print("Database created...")
+
+	return nil
 }
