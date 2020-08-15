@@ -20,8 +20,8 @@ func NewDbCreateCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "dbcreate",
 		Short: "Create database from config file",
-		Long: `Parse the configuration file and create a
-		database with that name`,
+		Long: "Parse the configuration file and create a " +
+			"database with that name",
 		Run: func(cmd *cobra.Command, args []string) {
 			cfg := cmd.Context().Value(ContextKey("configFile")).(*ConfigFile)
 			envStr, e := cmd.PersistentFlags().GetString("environment")
@@ -39,7 +39,7 @@ func NewDbCreateCommand() *cobra.Command {
 			}
 
 			if dbc.DbExists(env["name"].(string)) {
-				log.Print("Database exists")
+				log.Println("Database exists")
 			} else {
 				dbc.TableCreate(env["name"].(string))
 			}
