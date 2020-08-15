@@ -27,6 +27,8 @@ func TestDbCreate_ConfigFileInCtx(t *testing.T) {
 }
 
 func TestDbCreate_CreatesDatabase(t *testing.T) {
+	defer cleanUpDb(t)
+
 	cfgPath := "/Users/davidko/projects/phobos/db/config.json"
 	ctx := ConfigCtx(cfgPath)
 

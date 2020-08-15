@@ -104,7 +104,7 @@ func TestDbConnection_TableExists(t *testing.T) {
 func cleanUpDb(t *testing.T) {
 	dbconn, e := sql.Open(
 		"postgres",
-		"host=localhost user=davidko dbname=postgres sslmode=disable",
+		"host=localhost user=postgres password=password dbname=postgres sslmode=disable",
 	)
 	if e != nil {
 		t.Error(e)
