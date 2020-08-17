@@ -93,3 +93,19 @@ func (dbc *DbConnection) TableCreate(tableName string) error {
 
 	return nil
 }
+
+func (dbc *DbConnection) CurrentDb() (string, error) {
+	row, e := dbc.Dbo.QueryRow("SELECT current_database()")
+	if e != nil {
+		return "", e
+	}
+
+	var name string
+	row.Scan(&name)
+
+	return name, nil
+}
+
+func (dbc *DbConnection) ChangeDb() error {
+	_, e := dbc.Dbo.Exec()
+}

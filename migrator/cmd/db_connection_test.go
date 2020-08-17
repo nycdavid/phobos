@@ -3,8 +3,6 @@ package cmd
 import (
 	"database/sql"
 	"fmt"
-	"os"
-	"path"
 	"testing"
 
 	_ "github.com/lib/pq"
@@ -12,9 +10,7 @@ import (
 
 // When db does not exist
 func Test_DbExists(t *testing.T) {
-	root := os.Getenv("PROJECT_ROOT")
-	configPath := path.Join(root, "db/config.json")
-	configFile := NewConfigFile(configPath)
+	configFile := NewConfigFile("test/db/config.json")
 
 	testEnv := configFile.Environments["test"]
 	_, e := NewDbConnection(testEnv)
@@ -26,15 +22,13 @@ func Test_DbExists(t *testing.T) {
 
 // When db does exist
 func Test_AfterCreationDbExists(t *testing.T) {
-	root := os.Getenv("PROJECT_ROOT")
-	configPath := path.Join(root, "db/config.json")
-	configFile := NewConfigFile(configPath)
+	configFile := NewConfigFile("test/db/config.json")
+
 	testEnvConfig := configFile.Environments["test"]
 
 	dataSourceName := fmt.Sprintf(
-		"host=%s user=%s dbname=postgres sslmode=disable",
+		"host=%s user=postgres dbname=postgres password=password sslmode=disable",
 		testEnvConfig["host"].(string),
-		"davidko",
 	)
 
 	dbconn, e := sql.Open("postgres", dataSourceName)
@@ -60,19 +54,19 @@ func Test_AfterCreationDbExists(t *testing.T) {
 }
 
 func TestDbConnection_TableExists(t *testing.T) {
-	root := os.Getenv("PROJECT_ROOT")
-	configPath := path.Join(root, "db/config.json")
-	configFile := NewConfigFile(configPath)
+	defer cleanUpDb(t)
+
+	configFile := NewConfigFile("test/db/config.json")
 	testEnvConfig := configFile.Environments["test"]
 
 	dbo, e := sql.Open(
 		"postgres",
-		"host=localhost user=davidko dbname=postgres sslmode=disable",
+		"host=localhost user=postgres dbname=postgres password=password sslmode=disable",
 	)
+
 	if e != nil {
 		t.Errorf("Error connecting to database: %s", e)
 	}
-	defer cleanUpDb(t)
 
 	_, e = dbo.Exec("CREATE DATABASE test;")
 	if e != nil {

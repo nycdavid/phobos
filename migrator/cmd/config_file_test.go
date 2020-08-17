@@ -1,14 +1,12 @@
 package cmd
 
 import (
-	"os"
 	"path"
 	"testing"
 )
 
 func Test_NewConfigFile(t *testing.T) {
-	root := os.Getenv("PROJECT_ROOT")
-	configPath := path.Join(root, "db", "config.json")
+	configPath := path.Join("test", "db", "config.json")
 
 	configFile := NewConfigFile(configPath)
 
