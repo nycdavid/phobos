@@ -32,7 +32,7 @@ func NewDbCreateCommand() *cobra.Command {
 
 			env := cfg.Environments[envStr]
 
-			dbc, e := NewDbConnection(env)
+			dbc, e := NewBaseDbConnection(env)
 			if e != nil {
 				// [TODO] handle error
 				log.Print(e)

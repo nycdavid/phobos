@@ -13,11 +13,33 @@ type DbConnection struct {
 	Dbo         *sql.DB
 }
 
-func NewDbConnection(environment map[string]interface{}) (*DbConnection, error) {
+func NewBaseDbConnection(environment map[string]interface{}) (*DbConnection, error) {
 	dataSourceName := fmt.Sprintf(
 		"host=%s user=%s dbname=postgres password=%s sslmode=disable",
 		environment["host"].(string),
 		environment["user"].(string),
+		environment["password"].(string),
+	)
+
+	dbo, e := sql.Open("postgres", dataSourceName)
+	if e != nil {
+		return &DbConnection{}, e
+	}
+
+	e = dbo.Ping()
+	if e != nil {
+		return &DbConnection{}, e
+	}
+
+	return &DbConnection{Dbo: dbo, Environment: environment}, nil
+}
+
+func NewDbConnection(environment map[string]interface{}) (*DbConnection, error) {
+	dataSourceName := fmt.Sprintf(
+		"host=%s user=%s dbname=%s password=%s sslmode=disable",
+		environment["host"].(string),
+		environment["user"].(string),
+		environment["name"].(string),
 		environment["password"].(string),
 	)
 
@@ -95,17 +117,24 @@ func (dbc *DbConnection) TableCreate(tableName string) error {
 }
 
 func (dbc *DbConnection) CurrentDb() (string, error) {
-	row, e := dbc.Dbo.QueryRow("SELECT current_database()")
+	row := dbc.Dbo.QueryRow("SELECT current_database()")
+
+	var name string
+	e := row.Scan(&name)
 	if e != nil {
 		return "", e
 	}
 
-	var name string
-	row.Scan(&name)
-
 	return name, nil
 }
 
-func (dbc *DbConnection) ChangeDb() error {
-	_, e := dbc.Dbo.Exec()
+func (dbc *DbConnection) ChangeDb(dbname string) error {
+	_, e := dbc.Dbo.Exec(fmt.Sprintf("\\connect %s", dbname))
+	if e != nil {
+		log.Println(e)
+
+		return e
+	}
+
+	return nil
 }
