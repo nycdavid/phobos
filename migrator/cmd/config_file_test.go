@@ -1,20 +1,17 @@
 package cmd
 
 import (
-	"path"
 	"testing"
 )
 
 func Test_NewConfigFile(t *testing.T) {
-	configPath := path.Join("test", "db", "config.json")
+	configFile := NewConfigFile("test/db/config.json")
 
-	configFile := NewConfigFile(configPath)
+	h := configFile.
+		Environments["development"]["host"].(string)
 
-	developmentUrl := configFile.
-		Environments["development"]["url"].(string)
-
-	expected := "postgres://localhost/postgres?sslmode=disable"
-	if developmentUrl != expected {
-		t.Errorf("Expected url to be %s, got %s", expected, developmentUrl)
+	expected := "localhost"
+	if h != expected {
+		t.Errorf("Expected url to be %s, got %s", expected, h)
 	}
 }

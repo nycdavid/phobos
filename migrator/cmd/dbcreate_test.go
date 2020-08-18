@@ -18,7 +18,15 @@ func TestDbCreate_UsesDevelopmentByDefault(t *testing.T) {
 }
 
 func TestDbCreate_ConfigFileInCtx(t *testing.T) {
+	defer cleanUpDb(t)
+	os.Args[1] = "-e=test"
+
+	cfgPath := "test/db/config.json"
+	ctx := ConfigCtx(cfgPath)
+
 	dbcreateCmd := NewDbCreateCommand()
+	dbcreateCmd.ExecuteContext(ctx)
+
 	configFile := dbcreateCmd.Context().Value(ContextKey("configFile"))
 
 	if configFile == nil {

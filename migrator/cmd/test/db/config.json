@@ -1,7 +1,11 @@
 {
   "environments": {
     "development": {
-      "url": "postgres://localhost/postgres?sslmode=disable"
+			"host": "localhost",
+			"name": "development",
+			"port": 5432,
+			"user": "postgres",
+			"password": "password"
     },
 		"test": {
 			"host": "localhost",
